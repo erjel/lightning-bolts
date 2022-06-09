@@ -82,11 +82,11 @@ class SSLOnlineEvaluator(Callback):  # pragma: no cover
             else trainer._accelerator_connector
         )
         if accel.is_distributed:
-            if accel.use_ddp:
+            if accel._strategy_flag == 'ddp':
                 from torch.nn.parallel import DistributedDataParallel as DDP
 
                 self.online_evaluator = DDP(self.online_evaluator, device_ids=[pl_module.device])
-            elif accel.use_dp:
+            elif accel._strategy_flag == 'dp':
                 from torch.nn.parallel import DataParallel as DP
 
                 self.online_evaluator = DP(self.online_evaluator, device_ids=[pl_module.device])
